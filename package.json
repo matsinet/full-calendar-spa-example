@@ -2,21 +2,39 @@
   "name": "savvy-starter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node ./server/index.js",
+    "parcel-build": "parcel build index.html && cp _redirects ./dist/",
+    "serve": "parcel index.html",
+    "server:watch": "nodemon --watch ./server -e js ./server/index.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "@parcel/transformer-js": {
-    "inlineEnvironment": false
-  },
   "devDependencies": {
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.1",
-    "prettier": "1.19.1"
+    "nodemon": "^2.0.15",
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.0.1",
+    "path-browserify": "^1.0.1",
+    "prettier": "1.19.1",
+    "process": "^0.11.10"
   },
   "dependencies": {
+    "@fullcalendar/core": "^5.10.1",
+    "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/list": "^5.10.1",
+    "@fullcalendar/timegrid": "^5.10.1",
+    "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "html-literal": "^1.1.0",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.2.7",
+    "navigo": "^8.11.1",
+    "node": "^16.13.1",
     "yargs-parser": ">=13.1.2"
   }
 }

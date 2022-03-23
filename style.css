@@ -1,0 +1,183 @@
+header > h1 {
+  margin: 5px;
+  color: blueviolet;
+}
+
+#bio > h2 {
+  color: red;
+}
+
+#order > h2 {
+  color: green;
+}
+
+
+#jumbotron {
+  background: url(assets/img/photo-1528334713982-2d1fe11a157a.jpg) center center no-repeat;  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+#jumbotron > h2 {
+  color: white;
+  text-align: center;
+}
+
+#jumbotron > a {
+  text-decoration: none;
+  background-color: white;
+  font-size: 1.5em;
+  padding: 1.5rem;
+  border-radius: 10px;
+}
+
+form {
+  border: solid 1px black;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 1rem;
+}
+
+form > * {
+  margin: 0.5rem;
+}
+
+form > input[type="submit"] {
+  width: 40%;
+  margin: 0.5rem;
+  margin-right: auto;
+}
+
+footer {
+  border-top: solid 1px black;
+  padding: 2rem 2rem 4rem;
+  margin: 1rem 1rem;
+}
+
+#bio {
+  margin: 1rem;
+}
+
+#gallery {
+  border: solid 1px black;
+  clear: both;
+}
+
+#gallery > * {
+  padding: 0.5rem;
+}
+
+#gallery img {
+  display: block;
+  height: auto;
+  width: 92.5%;
+  margin: auto;
+}
+
+#pizzas {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  height: auto;
+  width: 92.5%;
+  margin: auto;
+}
+
+#pizzas tbody {
+  width: 100%;
+}
+
+#pizzas th {
+  text-align: left;
+}
+
+#pizzas td,th {
+  width: 25%;
+}
+
+@media (max-width: 549px){
+  .hidden--mobile {
+    display: none !important;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  nav > i {
+    padding: 1rem;
+    font-size: 2em;
+  }
+
+  nav > ul {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 0;
+  }
+
+  nav > ul > li {
+    padding: 0.5rem;
+    list-style-type: none;
+  }
+
+  #bio img {
+    float: left;
+    width: 40%;
+    height: auto;
+    margin-right: 1rem;
+  }
+
+  #gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 550px) {
+  nav > ul {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 0;
+  }
+
+  nav > ul > li {
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid;
+    padding: 0.5rem 0.5rem;
+    border-radius: 25px;
+  }
+
+  nav > .fa-bars {
+    display: none;
+  }
+
+  #bio {
+    margin-right: 3rem;
+  }
+
+  #bio img {
+    float: left;
+    width: 25%;
+    height: auto;
+    margin-right: 1rem;
+  }
+
+  #gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(33%, 1fr));
+    background-color: white;
+  }
+}
+
+.calendar-container {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
