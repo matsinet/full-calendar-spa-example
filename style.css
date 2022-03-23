@@ -178,6 +178,11 @@ footer {
 
 .calendar-container {
   width: 95%;
+  height: calc(100vh - 100px);
   margin-left: auto;
   margin-right: auto;
+}
+
+.appointment-container {
+  padding: 2em;
 }
