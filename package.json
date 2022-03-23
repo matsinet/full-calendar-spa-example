@@ -1,0 +1,22 @@
+{
+  "name": "savvy-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "@parcel/transformer-js": {
+    "inlineEnvironment": false
+  },
+  "devDependencies": {
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "1.19.1"
+  },
+  "dependencies": {
+    "yargs-parser": ">=13.1.2"
+  }
+}
