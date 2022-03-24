@@ -51,7 +51,8 @@ router.put("/:id", (request, response) => {
       $set: {
         customer: body.customer,
         start: body.start,
-        end: body.end
+        end: body.end,
+        url: body.url
       }
     },
 

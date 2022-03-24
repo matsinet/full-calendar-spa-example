@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 
 import axios from "axios";
 
-dotenv.config();
 
 const router = new Navigo("/");
 
@@ -56,7 +55,7 @@ function addEventListeners(st) {
     });
   }
 
-  if (st.view === "Appointments") {
+  if (st.view === "Appointments" && st.appointments) {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
@@ -74,11 +73,34 @@ function addEventListeners(st) {
       },
       height: '100%',
       dayMaxEventRows: true,
+      editable: true,
       eventClick: function(info) {
-        console.log('Event: ', info.event);
-
         // change the border color just for fun
         info.el.style.borderColor = 'red';
+      },
+      eventDrop: function(info) {
+        const event = info.event;
+
+        if (confirm("Are you sure about this change?")) {
+          const requestData = {
+            customer: event.title,
+            start: event.start.toJSON(),
+            end: event.end.toJSON(),
+            url: event.url
+          };
+
+          axios
+            .put(`${process.env.API_URL}/appointments/${event.id}`, requestData)
+            .then(response => {
+              console.log('matsinet-response:', response);
+              console.log(`Event '${response.data.customer}' (${response.data._id}) has been updated.`);
+            })
+            .catch(error => {
+              console.log("It puked", error);
+            });
+        } else {
+          info.revert();
+        }
       },
       events: st.appointments || []
     });
@@ -91,13 +113,11 @@ router.hooks({
   before: (done, params) => {
     let page = "Home";
     let id = "";
+
     if (params && params.data) {
       page = params.data.page ? capitalize(params.data.page) : "Home";
       id = params.data.id ? params.data.id : "";
     }
-
-    console.log('matsinet-page:', page);
-    console.log('matsinet-id:', id);
 
     if (page === "Home") {
       axios
@@ -113,7 +133,7 @@ router.hooks({
           done();
         })
         .catch((err) => console.log(err));
-    } else if (page === "Appointments") {
+    } else if (page === "Appointments" && id === "") {
       axios
         .get(`${process.env.API_URL}/appointments`)
         .then((response) => {
@@ -123,32 +143,32 @@ router.hooks({
               title: event.customer,
               start: new Date(event.start),
               end: new Date(event.end),
-              url: `/appointment/${event._id}`
+              url: `/appointments/${event._id}`
             };
           });
+          store.Appointments.event = null;
           store.Appointments.appointments = events;
           done();
         })
         .catch((error) => {
           console.log("It puked", error);
         });
-    } else if (page === "Appointment") {
+    } else if (page === "Appointments" && id !== "") {
       axios
       .get(`${process.env.API_URL}/appointments/${id}`)
       .then((response) => {
-        store.Appointment.event = {
+        store.Appointments.appointments = null;
+        store.Appointments.event = {
           id: response.data._id,
           title: response.data.customer,
           start: new Date(response.data.start),
           end: new Date(response.data.end),
           url: `/appointment/${response.data._id}`
         };
-        console.log('matsinet-store.Appointment.appointment:', store.Appointment.appointment);
         done();
       })
       .catch((error) => {
         console.log("It puked", error);
-        done();
       });
     } else {
       done();
@@ -159,13 +179,11 @@ router.hooks({
 router
   .on({
     "/": () => render(store.Home),
-    ":page": (params) => {
-      console.log(":page route was hit");
+    ":page/:id": (params) => {
       let page = capitalize(params.data.page);
       render(store[page]);
     },
-    ":page/:id": (params) => {
-      console.log(":page/:id route was hit");
+    ":page": (params) => {
       let page = capitalize(params.data.page);
       render(store[page]);
     }
