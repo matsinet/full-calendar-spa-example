@@ -2,12 +2,11 @@ import { Header, Nav, Main, Footer } from "./components";
 import * as store from "./store";
 import Navigo from "navigo";
 import { capitalize } from "lodash";
-import dotenv from "dotenv";
 
 import axios from "axios";
 
-
 const router = new Navigo("/");
+var calendar;
 
 function render(st) {
   document.querySelector("#root").innerHTML = `
@@ -56,8 +55,8 @@ function addEventListeners(st) {
   }
 
   if (st.view === "Appointments" && st.appointments) {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    const calendarEl = document.getElementById('calendar');
+    calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       headerToolbar: {
         left: 'prev,next today',
@@ -73,7 +72,9 @@ function addEventListeners(st) {
       },
       height: '100%',
       dayMaxEventRows: true,
+      navLinks: true,
       editable: true,
+      selectable: true,
       eventClick: function(info) {
         // change the border color just for fun
         info.el.style.borderColor = 'red';
@@ -92,14 +93,41 @@ function addEventListeners(st) {
           axios
             .put(`${process.env.API_URL}/appointments/${event.id}`, requestData)
             .then(response => {
-              console.log('matsinet-response:', response);
               console.log(`Event '${response.data.customer}' (${response.data._id}) has been updated.`);
             })
             .catch(error => {
+              info.revert();
               console.log("It puked", error);
             });
         } else {
           info.revert();
+        }
+      },
+      select: (info) => {
+        const customer = prompt("Please enter a title");
+
+        if (customer) {
+          const requestData = {
+            customer: customer,
+            start: info.start.toJSON(),
+            end: info.end.toJSON(),
+          };
+
+          axios
+          .post(`${process.env.API_URL}/appointments`, requestData)
+          .then(response => {
+            // Push the new pizza onto the Pizza state pizzas attribute, so it can be displayed in the pizza list
+            response.data.title = response.data.customer;
+            store.Appointments.appointments.push(response.data);
+            console.log(`Event '${response.data.customer}' (${response.data._id}) has been created.`);
+            calendar.addEvent(response.data);
+            calendar.unselect();
+          })
+          .catch(error => {
+            console.log("It puked", error);
+          });
+        } else {
+          calendar.unselect();
         }
       },
       events: st.appointments || []
