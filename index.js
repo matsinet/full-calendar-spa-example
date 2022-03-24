@@ -21,6 +21,32 @@ function render(st) {
   addEventListeners(st);
 }
 
+
+function handleEventDragResize(info) {
+  const event = info.event;
+
+  if (confirm("Are you sure about this change?")) {
+    const requestData = {
+      customer: event.title,
+      start: event.start.toJSON(),
+      end: event.end.toJSON(),
+      url: event.url
+    };
+
+    axios
+      .put(`${process.env.API_URL}/appointments/${event.id}`, requestData)
+      .then(response => {
+        console.log(`Event '${response.data.customer}' (${response.data._id}) has been updated.`);
+      })
+      .catch(error => {
+        info.revert();
+        console.log("It puked", error);
+      });
+  } else {
+    info.revert();
+  }
+}
+
 function addEventListeners(st) {
   // add menu toggle to bars icon in nav bar
   document
@@ -80,28 +106,10 @@ function addEventListeners(st) {
         info.el.style.borderColor = 'red';
       },
       eventDrop: function(info) {
-        const event = info.event;
-
-        if (confirm("Are you sure about this change?")) {
-          const requestData = {
-            customer: event.title,
-            start: event.start.toJSON(),
-            end: event.end.toJSON(),
-            url: event.url
-          };
-
-          axios
-            .put(`${process.env.API_URL}/appointments/${event.id}`, requestData)
-            .then(response => {
-              console.log(`Event '${response.data.customer}' (${response.data._id}) has been updated.`);
-            })
-            .catch(error => {
-              info.revert();
-              console.log("It puked", error);
-            });
-        } else {
-          info.revert();
-        }
+        handleEventDragResize(info);
+      },
+      eventResize: function(info) {
+        handleEventDragResize(info);
       },
       select: (info) => {
         const customer = prompt("Please enter a title");
