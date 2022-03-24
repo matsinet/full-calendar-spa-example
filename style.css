@@ -186,3 +186,11 @@ footer {
 .appointment-container {
   margin: 2em;
 }
+
+#delete-appointment {
+  margin-top: 2em;
+  padding: 0.5em;
+  background-color: hsl(4deg 99% 50%);
+  color: white;
+}
+

@@ -13,6 +13,7 @@ ${st.event ? `<div class="appointment-container">
     <div>
       <em>End: </em><span>${st.event.end.toLocaleString()}</span>
     </div>
+    <button id="delete-appointment" data-id="${st.event.id}">Delete Appointment</button>
   </div>` : ""
 }
 `;
