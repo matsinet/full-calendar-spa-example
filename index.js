@@ -206,7 +206,7 @@ router.hooks({
               start: new Date(event.start),
               end: new Date(event.end),
               url: `/appointments/${event._id}`,
-              allDay: event.allDay
+              allDay: event.allDay || false
             };
           });
           store.Appointments.event = null;
