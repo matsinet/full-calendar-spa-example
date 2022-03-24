@@ -12,6 +12,13 @@ const appointmentSchema = new mongoose.Schema({
   end: {
     type: Date,
     required: true,
+  },
+  url: {
+    type: String
+  },
+  allDay: {
+    type: Boolean,
+    default: false
   }
 });
 

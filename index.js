@@ -119,6 +119,7 @@ function addEventListeners(st) {
             customer: customer,
             start: info.start.toJSON(),
             end: info.end.toJSON(),
+            allDay: info.view.type === 'dayGridMonth'
           };
 
           axios
@@ -126,6 +127,8 @@ function addEventListeners(st) {
           .then(response => {
             // Push the new pizza onto the Pizza state pizzas attribute, so it can be displayed in the pizza list
             response.data.title = response.data.customer;
+            response.data.url = `/appointments/${response.data._id}`;
+            console.log('matsinet-response.data:', response.data);
             store.Appointments.appointments.push(response.data);
             console.log(`Event '${response.data.customer}' (${response.data._id}) has been created.`);
             calendar.addEvent(response.data);
@@ -202,7 +205,8 @@ router.hooks({
               title: event.customer,
               start: new Date(event.start),
               end: new Date(event.end),
-              url: `/appointments/${event._id}`
+              url: `/appointments/${event._id}`,
+              allDay: event.allDay
             };
           });
           store.Appointments.event = null;

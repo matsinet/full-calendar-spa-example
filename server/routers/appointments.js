@@ -52,7 +52,8 @@ router.put("/:id", (request, response) => {
         customer: body.customer,
         start: body.start,
         end: body.end,
-        url: body.url
+        url: body.url,
+        allDay: body.allDay
       }
     },
 
